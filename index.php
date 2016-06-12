@@ -13,10 +13,13 @@
 session_start();
 $id = session_id();
 
+require_once("addEvaluation.php");
+
 if (isset($_POST['reset_session'])) {
     reset_session();
 }
 
+$average = getAverageForPage();
 function reset_session() {
     session_regenerate_id(true);
 }
@@ -40,13 +43,13 @@ function reset_session() {
                 </form>
             </div>
             <div>
-                <p>Keskmine hinnang lehele: </p>
+                <p>Keskmine hinnang lehele: <?php echo $average[0]['rating']; ?> </p>
             </div>
         </div>
 
     </div>
     <div class="row navbar-fixed-bottom js-evalDone hidden" style="margin-bottom: 5%; float: none; text-align: center;">
-        <p id="status_message"></p>
+        <p id="status_message">Täname hinnangu eest</p>
     </div>
     <div class="row navbar-fixed-bottom js-eval" style="margin-bottom: 5%; float: none; text-align: center;">
         <form class="form-inline" action="" method="post">
