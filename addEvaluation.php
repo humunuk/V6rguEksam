@@ -14,7 +14,7 @@ try {
 //Actual stuff
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     //Debugging
-    file_put_contents("test.txt", json_encode($_POST), FILE_APPEND);
+//    file_put_contents("test.txt", json_encode($_POST), FILE_APPEND);
     
     try {
         $data = $_POST;
