@@ -85,6 +85,7 @@ function reset_session() {
                            rating : $("#ranges option:selected").text(),
                        },
                        success : function(data) {
+                           console.log(data);
                            showAndHideDiv(data);
                        }
                    });

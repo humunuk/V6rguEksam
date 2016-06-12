@@ -27,24 +27,32 @@ function getAverageForPage() {
 
 
 //Actual stuff
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    //Debugging
-//    file_put_contents("test.txt", json_encode($_POST), FILE_APPEND);
-    
+/**
+ * @return string
+ */
+function saveRating() {
     try {
         $data = $_POST;
 
         $connection = getConnection();
 
         $query = $connection->prepare("INSERT INTO skallari_lk_hinnangud (lehekylg, hinnang, session_id) VALUES (:lk, :hinnang, :session_id)");
-        $query->execute(['lk' => $data['page_name'], 'hinnang' => $data['rating'], 'session_id' => $data['session_id']]);
+        $query->execute(['lk'         => $data['page_name'], 'hinnang' => $data['rating'],
+                         'session_id' => $data['session_id']]);
 
 // TODO: Check for session_id, allow only once.
 //        $query = $connection->prepare("SELECT count(*) FROM skallari_lk_hinnangud WHERE session_id = :session_id");
 //        $query->execute(['session_id' => $data['session_id']]);
 
-        return "Täname hinnangu eest";
+        echo "Täname hinnangu eest";
     } catch (Exception $e) {
-        return "Midagi läks valesti andmebaasi sisestamisega!";
+        echo "Midagi läks valesti andmebaasi sisestamisega!";
     }
+}
+
+if ($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['page_name'])) {
+    //Debugging
+//    file_put_contents("test.txt", json_encode($_POST), FILE_APPEND);
+
+    saveRating();
 }
