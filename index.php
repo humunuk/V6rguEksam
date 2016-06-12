@@ -39,16 +39,22 @@ function reset_session() {
                     <button name="reset_session" type="submit">Reset session</button>
                 </form>
             </div>
+            <div>
+                <p>Keskmine hinnang lehele: </p>
+            </div>
         </div>
 
     </div>
-    <div class="row navbar-fixed-bottom" style="margin-bottom: 5%; float: none; text-align: center;">
-        <form class="form-inline" action="addEvaluation.php" method="post">
+    <div class="row navbar-fixed-bottom js-evalDone hidden" style="margin-bottom: 5%; float: none; text-align: center;">
+        <p id="status_message"></p>
+    </div>
+    <div class="row navbar-fixed-bottom js-eval" style="margin-bottom: 5%; float: none; text-align: center;">
+        <form class="form-inline" action="" method="post">
             <input id="session_id" type="text" value=<?php echo $id ?> hidden>
-            <input id="page_name" type="text" value=<?php echo  ?> hidden>
+            <input id="page_name" type="text" value=<?php echo $_SERVER['REQUEST_URI'] ?> hidden>
             <div class="form-group">
                 <label for="ranges">Kuidas antud lehekülg meeldib?</label>
-                <select class="form-control" name="ranges">
+                <select class="form-control" name="ranges" id="ranges">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -63,7 +69,6 @@ function reset_session() {
 <script>
     $(function() {
         var btn = $("#addEval");
-        var
 
         btn.on('click', function(e) {
             e.preventDefault();
@@ -71,12 +76,24 @@ function reset_session() {
             $.ajax("addEvaluation.php",
                    {
                        type : 'post',
-                       data : {test: "test", more: "dingadong"},
+                       data : {
+                           session_id : $("#session_id").val(),
+                           page_name : $("#page_name").val(),
+                           rating : $("#ranges option:selected").text(),
+                       },
                        success : function(data) {
-                           console.log(data);
+                           showAndHideDiv(data);
                        }
                    });
         });
+
+        function showAndHideDiv(data) {
+            var statusMessage = $("#status_message");
+            statusMessage.text(data);
+            $(".js-eval").hide();
+            $(".js-evalDone").removeClass("hidden").show();
+
+        }
     })
 </script>
 </body>
